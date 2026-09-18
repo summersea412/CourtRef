@@ -1,0 +1,2 @@
+@import './tokens.css';
+*{box-sizing:border-box} body{margin:0;background:var(--background);color:var(--text-primary);font-family:var(--font)} .page{padding:24px;max-width:600px;margin:auto}

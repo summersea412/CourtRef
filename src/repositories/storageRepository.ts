@@ -1,0 +1,6 @@
+import type { Archive } from '../domain/archive';
+const openDb=()=>new Promise<IDBDatabase>((resolve,reject)=>{const r=indexedDB.open('courtref',1);r.onupgradeneeded=()=>r.result.createObjectStore('archives',{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
+export async function getArchives(){const db=await openDb();return new Promise<Archive[]>((resolve,reject)=>{const r=db.transaction('archives').objectStore('archives').getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+export async function getArchiveById(id:string){const db=await openDb();return new Promise<Archive|undefined>((resolve,reject)=>{const r=db.transaction('archives').objectStore('archives').get(id);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+export async function saveArchive(a:Archive){const db=await openDb();return new Promise<void>((resolve,reject)=>{const r=db.transaction('archives','readwrite').objectStore('archives').put(a);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error);});}
+export async function deleteArchive(id:string){const db=await openDb();return new Promise<void>((resolve,reject)=>{const r=db.transaction('archives','readwrite').objectStore('archives').delete(id);r.onsuccess=()=>resolve();r.onerror=()=>reject(r.error);});}

@@ -1,0 +1,11 @@
+{
+  "name": "CourtRef",
+  "short_name": "CourtRef",
+  "description": "轻量篮球裁判助手",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fbfaf6",
+  "theme_color": "#f3c548",
+  "icons": [{ "src": "/icons/courtref.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

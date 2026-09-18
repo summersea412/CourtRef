@@ -1,0 +1,5 @@
+import type { Archive } from '../domain/archive'; import {getArchives as readArchives,getArchiveById as readArchiveById,saveArchive,deleteArchive as remove} from '../repositories/storageRepository'; import {reconcileArchive} from './gameService';
+export async function getArchives(): Promise<Archive[]> { return Promise.all((await readArchives()).map(reconcileArchive)); }
+export async function getArchiveById(id: string): Promise<Archive|undefined> { const archive = await readArchiveById(id); return archive ? reconcileArchive(archive) : undefined; }
+export async function createArchive(name:string,names:string[]):Promise<Archive>{const teams=names.filter(n=>n.trim()).map(n=>({id:crypto.randomUUID(),name:n.trim()}));if(!name.trim()||teams.length<2)throw new Error('至少需要两支队伍');const now=new Date().toISOString();const a={id:crypto.randomUUID(),name:name.trim(),teams,games:[],createdAt:now,updatedAt:now};await saveArchive(a);return a;}
+export async function deleteArchive(id:string){await remove(id);}
