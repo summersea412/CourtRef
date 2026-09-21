@@ -6,6 +6,7 @@ import './styles/referee.css';
 import './styles/timer.css';
 import './styles/history.css';
 import './styles/final.css';
+import './styles/tournament.css';
 
 const rootElement = document.getElementById('root');
 if (!rootElement) throw new Error('Root element not found');

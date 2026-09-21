@@ -35,7 +35,7 @@ export async function createGame(archiveId: string, teamAId: string, teamBId: st
   if (!archive.teams.some(team => team.id === teamAId) || !archive.teams.some(team => team.id === teamBId)) throw new Error('请选择当前存档中的队伍');
   if (teamAId === teamBId) throw new Error('比赛双方必须是不同队伍');
   if (!Number.isInteger(duration) || duration < 60 || duration > 3600) throw new Error('比赛时间必须是 1–60 分钟');
-  const game: Game = { id: crypto.randomUUID(), teamAId, teamBId, scoreA: 0, scoreB: 0, duration, remainingTime: duration, status: 'ready', startedAt: null, finishedAt: null, actions: [] };
+  const game: Game = { id: crypto.randomUUID(), teamAId, teamBId, scoreA: 0, scoreB: 0, duration, remainingTime: duration, status: 'ready', startedAt: null, finishedAt: null, actions: [], resultSource: 'live' };
   const updatedArchive: Archive = { ...archive, games: [...archive.games, game], updatedAt: new Date().toISOString() };
   await saveArchive(updatedArchive);
   return game;

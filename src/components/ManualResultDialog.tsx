@@ -1,0 +1,9 @@
+import { useState } from 'react';
+import type { Game } from '../domain/game';
+import type { Archive } from '../domain/archive';
+
+export function ManualResultDialog({ archive, game, onCancel, onSave }: { archive: Archive; game: Game; onCancel: () => void; onSave: (scoreA: number, scoreB: number) => void }) {
+  const [scoreA, setScoreA] = useState(String(game.scoreA)); const [scoreB, setScoreB] = useState(String(game.scoreB)); const [error, setError] = useState(''); const teamA = archive.teams.find(team => team.id === game.teamAId)?.name ?? '未知队伍'; const teamB = archive.teams.find(team => team.id === game.teamBId)?.name ?? '未知队伍';
+  const save = () => { if (!/^\d+$/.test(scoreA) || !/^\d+$/.test(scoreB)) { setError('请输入非负整数比分'); return; } if (Number(scoreA) === Number(scoreB)) { setError('比分不能相同'); return; } onSave(Number(scoreA), Number(scoreB)); };
+  return <div className="dialog-backdrop" role="presentation" onClick={onCancel}><section className="dialog manual-dialog" role="dialog" aria-modal="true" aria-labelledby="manual-title" onClick={event=>event.stopPropagation()}><p className="eyebrow">MANUAL RESULT</p><h2 id="manual-title">{teamA} VS {teamB}</h2><div className="manual-inputs"><label>{teamA}<input type="number" min="0" max="999" step="1" value={scoreA} onChange={event=>setScoreA(event.target.value)} /></label><span>:</span><label>{teamB}<input type="number" min="0" max="999" step="1" value={scoreB} onChange={event=>setScoreB(event.target.value)} /></label></div><p className="muted">只允许非负整数，比分不能相同。</p>{error&&<p className="error-message" role="alert">{error}</p>}<div className="dialog-actions"><button className="button secondary" type="button" onClick={onCancel}>取消</button><button className="button" type="button" onClick={save}>保存结果</button></div></section></div>;
+}
